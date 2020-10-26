@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <!-- <router-link to="/">Go to </router-link>
+    <router-link to="/">Go to </router-link>
     <router-link to="/bar">Go to Bar</router-link>
     <router-link to="/foo">Go to Foo</router-link>
-     <router-view></router-view> -->
+     <router-view></router-view>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <div class="card">
       <h5>Basic</h5>

@@ -1,9 +1,14 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+//import HelloWorld from './components/HelloWorld.vue'
+import Store from './components/Store.vue'
 Vue.config.productionTip = false
-Vue.use(VueRouter)
+Vue.use(VueRouter, BootstrapVue)
 
 // 0. 如果使用模块化机制编程，导入Vue和VueRouter，要调用 Vue.use(VueRouter)
 
@@ -18,7 +23,7 @@ const Bar = { template: '<div>bar</div>' }
 // 我们晚点再讨论嵌套路由。
 const routes = [
   { path: '/', component: App },
-  { path: '/foo', component: HelloWorld },
+  { path: '/foo', component: Store },
   { path: '/bar', component: Bar }
 ]
 
