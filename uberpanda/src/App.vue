@@ -1,36 +1,24 @@
 <template>
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <router-link to="/">Go to </router-link>
-    <router-link to="/bar">Go to Bar</router-link>
-    <router-link to="/foo">Go to Foo</router-link>
+    <router-link to="/" class="m-3">店家清單</router-link>
+    <router-link to="/foo" class="m-3">新增頁面</router-link>
      <router-view></router-view>
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <div class="card">
-      <h5>Basic</h5>
-      <InputText type="text" v-model="value" />
-      <span :style="{marginLeft: '.5em'}">{{value}}</span>
-    </div>
-  </div>
+     </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-import InputText from 'primevue/inputtext';
-import 'primevue/resources/themes/saga-blue/theme.css';
-import 'primevue/resources/primevue.min.css';
 export default {
-  name: 'App',
+  name: "App",
   data() {
-		return {
-            value: '',
-		}
-	},
+    return {
+      
+    };
+  },
   components: {
-    InputText,
-    // HelloWorld
-  }
-}
+    
+  },
+};
 </script>
 
 <style>
@@ -40,6 +28,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+margin-top: 10px;
 }
 </style>

@@ -27,9 +27,6 @@ import axios from "axios";
 import { print } from "graphql";
 import gql from "graphql-tag";
 
-import "primevue/resources/themes/saga-blue/theme.css";
-import "primevue/resources/primevue.min.css";
-
 const ALL_STORE = gql`
   query allStore {
     store(distinct_on: id) {

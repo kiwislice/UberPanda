@@ -1,11 +1,11 @@
-import Vue from 'vue'
+﻿import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-//import HelloWorld from './components/HelloWorld.vue'
+import StoreView from './components/StoreView.vue'
 import Store from './components/Store.vue'
 Vue.config.productionTip = false
 Vue.use(VueRouter, BootstrapVue)
@@ -22,7 +22,7 @@ const Bar = { template: '<div>bar</div>' }
 // 或者，只是一个组件配置对象。
 // 我们晚点再讨论嵌套路由。
 const routes = [
-  { path: '/', component: App },
+  { path: '/', component: StoreView },
   { path: '/foo', component: Store },
   { path: '/bar', component: Bar }
 ]
