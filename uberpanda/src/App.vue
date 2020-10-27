@@ -3,6 +3,7 @@
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <router-link to="/" class="m-3">店家清單</router-link>
     <router-link to="/foo" class="m-3">新增頁面</router-link>
+    <router-link to="/pricecomputer" class="m-3">金額計算</router-link>
      <router-view></router-view>
      </div>
 </template>

@@ -7,6 +7,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import StoreView from './components/StoreView.vue'
 import Store from './components/Store.vue'
+import PriceComputer from './components/PriceComputer.vue'
 Vue.config.productionTip = false
 Vue.use(VueRouter, BootstrapVue)
 
@@ -24,7 +25,8 @@ const Bar = { template: '<div>bar</div>' }
 const routes = [
   { path: '/', component: StoreView },
   { path: '/foo', component: Store },
-  { path: '/bar', component: Bar }
+  { path: '/bar', component: Bar },
+  { path: '/pricecomputer', component: PriceComputer },
 ]
 
 // 3. 创建 router 实例，然后传 `routes` 配置
