@@ -1,21 +1,47 @@
 <template>
-  <div id="list">
-    <h5>店家清單</h5>
+  <div id="storeview" class="container">
     <div class="row">
-    <div class="col-6">
-      <div v-for="(value, name) in foodpanda" :key="name">
-          <div class="col-sm-12">
-            <a :href="value.url" target="_blank">{{ value.name }}</a>
-          </div>
+      <div class="col">
+        <a @click="onFoodpandaClick">
+          <img
+            alt="foodpanda"
+            src="../assets/foodpanda.jpg"
+            class="rounded img-thumbnail"
+            style="max-width: 200px; cursor: pointer"
+          />
+        </a>
+        <ul class="list-group list-group-flush">
+          <li
+            class="list-group-item"
+            v-for="(value, name) in foodpanda"
+            :key="name"
+          >
+            <div class="">
+              <a :href="value.url" target="_blank">{{ value.name }}</a>
+            </div>
+          </li>
+        </ul>
       </div>
-    </div>
-    <div class="col">
-      <div v-for="(value, index) in ubereat" :key="index">
-          <div class="col-sm-12">
-            <a :href="value.url" target="_blank">{{ value.name }}</a>
-          </div>
+      <div class="col">
+        <a @click="onUbereatClick">
+          <img
+            alt="ubereat"
+            src="../assets/ubereat.jpg"
+            class="rounded img-thumbnail"
+            style="max-width: 200px; cursor: pointer"
+        /></a>
+        <ul class="list-group list-group-flush">
+          <li
+            class="list-group-item"
+            v-for="(value, index) in ubereat"
+            :key="index"
+          >
+            <div class="col-sm-12">
+              <a :href="value.url" target="_blank">{{ value.name }}</a>
+            </div>
+          </li>
+        </ul>
       </div>
-    </div>
     </div>
   </div>
 </template>
@@ -32,6 +58,7 @@ export default {
       stores: [],
       ubereat: [],
       foodpanda: [],
+      currentPlatform: "foodpanda",
     };
   },
   components: {},
@@ -46,39 +73,24 @@ export default {
                 url
               }
             } `,
-          // operationName: "...",
-          // variables: { myVariable: "someValue", ... },
         })
         .then(
           (response) => (
             (this.stores = response.data.data.store),
             this.stores.forEach((element) => {
+              console.log(element);
               if (element.url.search("ubereat") > 0) this.ubereat.push(element);
               if (element.url.search("foodpanda") > 0)
                 this.foodpanda.push(element);
             })
           )
         );
-      // const cors = 'https://cors-anywhere.herokuapp.com/'; // use cors-anywhere to fetch api data
-      // const url = 'https://www.foodpanda.com.tw/restaurant/e1hu/cheng-tai-wan-shi-mu-yu-zhuan-mai-dian-gu-shan-mei-shu-dian'; // origin api url
-      // var  parser, xmlDoc;
-
-      /** fetch api url by cors-anywhere */
-      // axios.get(`${cors}${url}`)
-      //   .then((response) => {
-      //      const msg = response.data;
-      //     // document.body.innerHTML = JSON.stringify(msg);
-      //     parser = new DOMParser();
-      //     xmlDoc = parser.parseFromString(msg,"text/xml");
-
-      //     console.log(xmlDoc.getElementsByTagName("title"));
-
-      //     // console.log(msg);
-      //   },
-      //     (error) => {
-      //       console.log(error);
-      //     }
-      //   );
+    },
+    onFoodpandaClick: function () {
+      this.currentPlatform = "foodpanda";
+    },
+    onUbereatClick: function () {
+      this.currentPlatform = "ubereat";
     },
   },
   created: function () {

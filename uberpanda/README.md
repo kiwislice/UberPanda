@@ -1,24 +1,6 @@
 # uberpanda
 
-## Project setup
-```
-npm install
-```
+URL：https://kiwislice.github.io/UberPanda/
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+公司內部叫外送用
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

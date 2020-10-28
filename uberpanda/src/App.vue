@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <router-link to="/" class="m-3">店家清單</router-link>
-    <router-link to="/foo" class="m-3">新增頁面</router-link>
-    <router-link to="/pricecomputer" class="m-3">金額計算</router-link>
+    <ul class="nav justify-content-center">
+      <router-link to="/" class="m-3 nav-link">店家清單</router-link>
+      <router-link to="/foo" class="m-3 nav-link">新增頁面</router-link>
+      <router-link to="/pricecomputer" class="m-3 nav-link">金額計算</router-link>
+    </ul>
      <router-view></router-view>
      </div>
 </template>
