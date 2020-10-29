@@ -2,7 +2,10 @@
   <div id="storeview" class="container">
     <div class="row">
       <div class="col">
-        <a @click="onFoodpandaClick">
+        <a
+          @click="onFoodpandaClick"
+          href="https://www.foodpanda.com.tw/restaurants/new?lat=22.6506979&lng=120.3038248&vertical=restaurants"
+        >
           <img
             alt="foodpanda"
             src="../assets/foodpanda.jpg"
@@ -23,7 +26,10 @@
         </ul>
       </div>
       <div class="col">
-        <a @click="onUbereatClick">
+        <a
+          @click="onUbereatClick"
+          href="https://www.ubereats.com/tw/feed?pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMiVFNSU4RCU5QSVFNiU4NCU5QiVFNCVCOCU4MCVFOCVCNyVBRjM2NiVFOCU5OSU5RjE0JUU4JTk5JTlGJTIyJTJDJTIycmVmZXJlbmNlJTIyJTNBJTIyQ2hJSlU1bnkwZnNFYmpRUlhfQWlMSGl6a2tBJTIyJTJDJTIycmVmZXJlbmNlVHlwZSUyMiUzQSUyMmdvb2dsZV9wbGFjZXMlMjIlMkMlMjJsYXRpdHVkZSUyMiUzQTIyLjY1MDU1MDYlMkMlMjJsb25naXR1ZGUlMjIlM0ExMjAuMzAzNjI1NCU3RA%3D%3D"
+        >
           <img
             alt="ubereat"
             src="../assets/ubereat.jpg"
@@ -46,7 +52,8 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+// import axios from "axios";
+import db from "./Repository.js";
 
 export default {
   name: "App",
@@ -64,27 +71,17 @@ export default {
   components: {},
   methods: {
     query: function () {
-      axios
-        .post("https://evident-lamprey-59.hasura.app/v1/graphql", {
-          query: `query MyQuery {
-              store(distinct_on: id) {
-                id
-                name
-                url
-              }
-            } `,
-        })
-        .then(
-          (response) => (
-            (this.stores = response.data.data.store),
-            this.stores.forEach((element) => {
-              console.log(element);
-              if (element.url.search("ubereat") > 0) this.ubereat.push(element);
-              if (element.url.search("foodpanda") > 0)
-                this.foodpanda.push(element);
-            })
-          )
-        );
+      db.getAllStores(
+        (response) => (
+          (this.stores = response.data.data.store),
+          this.stores.forEach((element) => {
+            console.log(element);
+            if (element.url.search("ubereat") > 0) this.ubereat.push(element);
+            if (element.url.search("foodpanda") > 0)
+              this.foodpanda.push(element);
+          })
+        )
+      );
     },
     onFoodpandaClick: function () {
       this.currentPlatform = "foodpanda";

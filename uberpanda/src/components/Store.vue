@@ -1,14 +1,8 @@
 <template>
   <div>
     <div class="editstore">
-      <input type="text" v-model="editStore.name" placeholder="店名" class="mx-auto w-50 form-control"/>
-      <input type="text" v-model="editStore.url" placeholder="URL" class="mx-auto w-50 form-control mt-1"/>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" v-model="editStore.eaten" for="eatenCheck"/>
-        <label class="form-check-label" for="eatenCheck">
-          吃過了
-        </label>
-      </div>
+      <input type="text" v-model="editStore.name" placeholder="店家名稱" class="mx-auto w-50 form-control"/>
+      <input type="text" v-model="editStore.url" placeholder="店家在Uber或Panda的網址" class="mx-auto w-50 form-control mt-1"/>
       <button label="新增" @click="createStore($event)" class="mx-auto btn btn-primary my-1">新增</button>
     </div>
     <div class="storelist">
@@ -21,29 +15,7 @@
 </template>
 
 <script>
-// import InputText from "primevue/inputtext";
-// import Button from "primevue/button";
-import axios from "axios";
-import { print } from "graphql";
-import gql from "graphql-tag";
-
-const ALL_STORE = gql`
-  query allStore {
-    store(distinct_on: id) {
-      id
-      name
-      url
-    }
-  }
-`;
-
-const ADD_STORE = gql`
-  mutation addStore($name: String!, $url: String!, $eaten: Boolean!) {
-    insert_store_one(object: {name: $name, url: $url, eaten: $eaten}) {
-      id
-    }
-  }
-`;
+import db from "./Repository.js";
 
 export default {
   name: "Store",
@@ -59,19 +31,10 @@ export default {
       // var vm = this.$data;
       var o = Object.assign({}, this.editStore);
       console.log(o);
-      axios
-        .post("https://evident-lamprey-59.hasura.app/v1/graphql", {
-          query: print(ADD_STORE),
-          variables: o,
-        })
-        .then((response) => console.log(response));
+      db.createStore(o, (response) => console.log(response))
     },
     getStores: function () {
-      axios
-        .post("https://evident-lamprey-59.hasura.app/v1/graphql", {
-          query: print(ALL_STORE),
-        })
-        .then((response) => (this.stores = response.data.data.store));
+      db.getAllStores((response) => (this.stores = response.data.data.store));
     },
   },
   mounted: function () {
@@ -87,18 +50,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
 </style>
