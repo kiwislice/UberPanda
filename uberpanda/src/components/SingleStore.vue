@@ -40,46 +40,36 @@ export default {
     };
   },
   methods: {
-    StoreTitle() {
+    girPage() {
       if (this.store_val.title === null) {
-        this.getStoreInfo();
+        this.notHaveTitleValue();
       } else {
-        if (this.store_val.url.match(/panda/) && this.store_val.image === "") {
-          this.img_url = panda_icon;
-        }else if (this.store_val.url.match(/ubereat/) && this.store_val.image === "")
-          this.img_url = ubereat_icon;
-        else
-          this.img_url = this.store_val.image;
-        this.title = this.store_val.title;
-        this.description = this.store_val.description;
+        this.haveTitleValue();
       }
+    },
+    notHaveTitleValue: function() {
+      this.getStoreInfo();
+    },
+    haveTitleValue: function() {
+      if (this.store_val.url.match(/panda/) && this.store_val.image === "") {
+        this.img_url = panda_icon;
+      } else if (
+        this.store_val.url.match(/ubereat/) &&
+        this.store_val.image === ""
+      )
+        this.img_url = ubereat_icon;
+      else this.img_url = this.store_val.image;
+      this.title = this.store_val.title;
+      this.description = this.store_val.description;
     },
     getStoreInfo: function() {
       const cors = "https://cors-anywhere.herokuapp.com/";
       const url = this.store_val.url;
-
       axios.get(`${cors}${url}`).then(
         (response) => {
           const msg = response.data;
-          if (url.match(/panda/)) {
-            console.log(msg.match(panda_regex));
-            this.title = msg.match(panda_regex)[1];
-            
-            this.img_url = panda_icon;
-            this.store_val.description = msg.match(panda_dec)[1];
-            this.store_val.image = "";
-          } else if (url.match(/ubereat/)) {
-            var ubereat_img = msg.match(uber_img_reg);
-            this.title = msg.match(uber_title_reg)[1];
-            this.store_val.description = msg.match(uber_dec)[1];
-            if (ubereat_img === null) {
-              this.img_url = ubereat_icon;
-              this.store_val.image = "";
-            } else {
-              this.img_url = ubereat_img[1];
-              this.store_val.image = this.img_url;
-            }
-          }
+          if (url.match(/panda/)) this.pandaOption(msg);
+          else if (url.match(/ubereat/)) this.ubereatOption(msg);
           this.store_val.title = this.title;
           this.updataStore();
         },
@@ -88,19 +78,31 @@ export default {
         }
       );
     },
-    pandaOption:function(){
-
+    pandaOption: function(msg) {
+      this.title = msg.match(panda_regex)[1];
+      this.img_url = panda_icon;
+      this.store_val.description = msg.match(panda_dec)[1];
+      this.store_val.image = "";
     },
-    ubereatOption:function(){
-
+    ubereatOption: function(msg) {
+      var ubereat_img = msg.match(uber_img_reg);
+      this.title = msg.match(uber_title_reg)[1];
+      this.store_val.description = msg.match(uber_dec)[1];
+      if (ubereat_img === null) {
+        this.img_url = ubereat_icon;
+        this.store_val.image = "";
+      } else {
+        this.img_url = ubereat_img[1];
+        this.store_val.image = this.img_url;
+      }
     },
     updataStore: function() {
       var o = Object.assign({}, this.store_val);
-      db.updateStoreOg(o, (response) => console.log(response))
+      db.updateStoreOg(o, (response) => console.log(response));
     },
   },
   created: function() {
-    this.StoreTitle();
+    this.girPage();
   },
 };
 </script>
@@ -109,12 +111,12 @@ export default {
   width: 60%;
   height: 85%;
 }
-.img-center{
+.img-center {
   position: absolute;
-    margin: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 </style>
