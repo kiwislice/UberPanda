@@ -107,6 +107,9 @@ export default {
 };
 </script>
 <style>
+.row .no-gutters {
+  height: 120px;
+}
 .row .no-gutters img {
   width: 60%;
   height: 85%;

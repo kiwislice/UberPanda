@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <ul class="nav justify-content-center">
-      <router-link to="/" class="m-3 nav-link">店家清單</router-link>
+    <ul class="nav nav-pills justify-content-center">
+      <router-link to="/home" class="m-3 nav-link">店家清單</router-link>
       <router-link to="/foo" class="m-3 nav-link">新增頁面</router-link>
       <router-link to="/pricecomputer" class="m-3 nav-link">金額計算</router-link>
     </ul>
-     <router-view></router-view>
-     </div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -15,12 +15,16 @@ export default {
   name: "App",
   data() {
     return {
-      
+      currentPage: 1,
     };
   },
-  components: {
-    
+  methods: {
+    changePageTo: function (index) {
+      console.log("changePageTo " + index);
+      currentPage = index;
+    },
   },
+  components: {},
 };
 </script>
 
@@ -31,6 +35,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-margin-top: 10px;
+  margin-top: 10px;
 }
 </style>

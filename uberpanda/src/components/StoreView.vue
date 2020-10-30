@@ -16,6 +16,7 @@
         <ul class="list-group list-group-flush">
           <li
             class="list-group-item"
+            style="border: none;"
             v-for="(value, index) in foodpanda"
             :key="index"
           >
@@ -39,6 +40,7 @@
         <ul class="list-group list-group-flush">
           <li
             class="list-group-item"
+            style="border: none;"
             v-for="(value, index) in ubereat"
             :key="index"
           >

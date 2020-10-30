@@ -24,7 +24,7 @@ const Bar = { template: '<div>bar</div>' }
 // 或者，只是一个组件配置对象。
 // 我们晚点再讨论嵌套路由。
 const routes = [
-  { path: '/', component: StoreView },
+  { path: '/home', component: StoreView },
   { path: '/foo', component: Store },
   { path: '/bar', component: Bar },
   { path: '/pricecomputer', component: PriceComputer },
@@ -34,6 +34,8 @@ const routes = [
 // 你还可以传别的配置参数, 不过先这么简单着吧。
 const router = new VueRouter({
   mode:'hash',
+  linkActiveClass: "active",
+  linkExactActiveClass: "exact-active",
   routes // (缩写) 相当于 routes: routes
 })
 
