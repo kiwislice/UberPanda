@@ -15,6 +15,7 @@ const GET_ALL_STORE = gql`
       title
       description
       image
+      score
     }
   }
 `;
@@ -32,6 +33,17 @@ const UPDATE_STORE_OG = gql`
     update_store(where: {id: {_eq: $id}}, _set: {image: $image, title: $title, description: $description}){
       returning {
         id
+      }
+    }
+  }
+`;
+
+const INC_STORE_SCORE = gql`
+  mutation incStoreScore($id: Int!, $score: Int!) {
+    update_store(where: {id: {_eq: $id}}, _inc: {score: $score}) {
+      returning {
+        id
+        score
       }
     }
   }
@@ -61,6 +73,16 @@ export default {
     axios
       .post(DB_URL, {
         query: print(UPDATE_STORE_OG),
+        variables: o,
+      })
+      .then((response) => resCallback && resCallback(response));
+  },
+  incStoreScore: function (store, resCallback) {
+    var o = { id: store.id, score: store.score };
+    console.log("incStoreScore: %s", o);
+    axios
+      .post(DB_URL, {
+        query: print(INC_STORE_SCORE),
         variables: o,
       })
       .then((response) => resCallback && resCallback(response));
