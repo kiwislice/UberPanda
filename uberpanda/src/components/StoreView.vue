@@ -20,7 +20,6 @@
             :key="index"
           >
             <div class="">
-              <!-- <a :href="value.url" target="_blank">{{ value.name }}</a> -->
               <SingleStore v-model="foodpanda[index]"></SingleStore>
             </div>
           </li>
@@ -44,21 +43,10 @@
             :key="index"
           >
             <div class="">
-              <!-- <a :href="value.url" target="_blank">{{ value.name }}</a> -->
               <SingleStore v-model="ubereat[index]"></SingleStore>
             </div>
           </li>
         </ul>
-        <!-- <div class="col-6">
-          <div class="col-sm-12" v-for="(value, name) in foodpanda" :key="name">
-            <SingleStore v-model="value.url"></SingleStore>
-          </div>
-        </div>
-        <div class="col">
-          <div class="col-sm-12" v-for="(value, index) in ubereat" :key="index">
-            <SingleStore v-model="value.url"></SingleStore>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
