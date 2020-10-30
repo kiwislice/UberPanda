@@ -16,11 +16,12 @@
         <ul class="list-group list-group-flush">
           <li
             class="list-group-item"
-            v-for="(value, name) in foodpanda"
-            :key="name"
+            v-for="(value, index) in foodpanda"
+            :key="index"
           >
             <div class="">
-              <a :href="value.url" target="_blank">{{ value.name }}</a>
+              <!-- <a :href="value.url" target="_blank">{{ value.name }}</a> -->
+              <SingleStore v-model="foodpanda[index]"></SingleStore>
             </div>
           </li>
         </ul>
@@ -42,18 +43,32 @@
             v-for="(value, index) in ubereat"
             :key="index"
           >
-            <div class="col-sm-12">
-              <a :href="value.url" target="_blank">{{ value.name }}</a>
+            <div class="">
+              <!-- <a :href="value.url" target="_blank">{{ value.name }}</a> -->
+              <SingleStore v-model="ubereat[index]"></SingleStore>
             </div>
           </li>
         </ul>
+        <!-- <div class="col-6">
+          <div class="col-sm-12" v-for="(value, name) in foodpanda" :key="name">
+            <SingleStore v-model="value.url"></SingleStore>
+          </div>
+        </div>
+        <div class="col">
+          <div class="col-sm-12" v-for="(value, index) in ubereat" :key="index">
+            <SingleStore v-model="value.url"></SingleStore>
+          </div>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
+
 <script>
+
 // import axios from "axios";
 import db from "./Repository.js";
+import SingleStore from "../components/SingleStore.vue";
 
 export default {
   name: "App",
@@ -61,40 +76,42 @@ export default {
     return {
       value: "",
       products: null,
-
+      test:
+        "https://www.ubereats.com/kaohsiung/food-delivery/%E8%B1%AA%E9%A3%BD%E6%8E%92%E9%AA%A8%E4%BE%BF%E7%95%B6/OgxyZ1-nSuup42Ol3-3Rgw?pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMiVFNSU4RCU5QSVFNiU4NCU5QiVFNCVCOCU4MCVFOCVCNyVBRjM2NiVFOCU5OSU5RjE0JUU4JTk5JTlGJTIyJTJDJTIycmVmZXJlbmNlJTIyJTNBJTIyQ2hJSlU1bnkwZnNFYmpRUlhfQWlMSGl6a2tBJTIyJTJDJTIycmVmZXJlbmNlVHlwZSUyMiUzQSUyMmdvb2dsZV9wbGFjZXMlMjIlMkMlMjJsYXRpdHVkZSUyMiUzQTIyLjY1MDU1MDYlMkMlMjJsb25naXR1ZGUlMjIlM0ExMjAuMzAzNjI1NCU3RA%3D%3D",
       stores: [],
       ubereat: [],
       foodpanda: [],
       currentPlatform: "foodpanda",
     };
   },
-  components: {},
+  components: { SingleStore },
   methods: {
+
     query: function () {
       db.getAllStores(
         (response) => (
+          console.log(this.stores),
           (this.stores = response.data.data.store),
           this.stores.forEach((element) => {
-            console.log(element);
-            if (element.url.search("ubereat") > 0) this.ubereat.push(element);
+            if (element.url.search("ubereat") > 0) 
+              this.ubereat.push(element);
             if (element.url.search("foodpanda") > 0)
               this.foodpanda.push(element);
           })
         )
       );
     },
-    onFoodpandaClick: function () {
+    onFoodpandaClick: function() {
       this.currentPlatform = "foodpanda";
     },
-    onUbereatClick: function () {
+    onUbereatClick: function() {
       this.currentPlatform = "ubereat";
     },
   },
-  created: function () {
+  created: function() {
     this.query();
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

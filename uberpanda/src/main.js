@@ -8,6 +8,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import StoreView from './components/StoreView.vue'
 import Store from './components/Store.vue'
 import PriceComputer from './components/PriceComputer.vue'
+
 Vue.config.productionTip = false
 Vue.use(VueRouter, BootstrapVue)
 

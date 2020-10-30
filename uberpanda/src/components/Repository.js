@@ -28,8 +28,12 @@ const CREATE_STORE = gql`
 `;
 
 const UPDATE_STORE_OG = gql`
-  mutation updateStoreOg($id: Integer!, $title: String!, $description: String!, $image: String!) {
-    update_store(where: {id: {_eq: $id}}, _set: {image: $image, title: $title, description: $description})
+  mutation updateStoreOg($id: Int!, $title: String!, $description: String!, $image: String!) {
+    update_store(where: {id: {_eq: $id}}, _set: {image: $image, title: $title, description: $description}){
+      returning {
+        id
+      }
+    }
   }
 `;
 

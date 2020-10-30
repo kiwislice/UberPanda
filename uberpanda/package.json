@@ -11,17 +11,16 @@
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.18.1",
+    "cli-plugin-eslint": "^0.1.0",
     "core-js": "^3.6.5",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0",
     "vue": "^2.6.12",
-    "open-graph-scraper": "^4.6.0",
     "vue-meta": "^2.4.0",
     "vue-router": "^3.4.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
