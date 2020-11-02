@@ -80,7 +80,6 @@ export default {
     query: function () {
       db.getAllStores(
         (response) => (
-          console.log(this.stores),
           (this.stores = response.data.data.store),
           this.stores.forEach((element) => {
             if (element.url.search("ubereat") > 0) 

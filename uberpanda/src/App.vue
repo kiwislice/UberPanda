@@ -21,7 +21,7 @@ export default {
   methods: {
     changePageTo: function (index) {
       console.log("changePageTo " + index);
-      currentPage = index;
+      this.currentPage = index;
     },
   },
   components: {},
