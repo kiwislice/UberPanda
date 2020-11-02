@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-
+import 'animate.css/animate.css'
 import StoreView from './components/StoreView.vue'
 import Store from './components/Store.vue'
 import PriceComputer from './components/PriceComputer.vue'

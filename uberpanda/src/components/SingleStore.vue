@@ -1,7 +1,7 @@
 <template>
   <div class="row align-items-center" style="height:120px">
     <div class="col-10">
-      <a :href="store_val.url" target="_blank">
+      <a :href="store_val.url" target="_blank" style="text-decoration:none;">
         <div class="card">
           <div class="row no-gutters">
             <div class="col-md-4">
@@ -25,12 +25,13 @@
         </div>
         <div class="col-12">
           <div class="row ">
-            <div class="col-5">
+            <div class="col-5 ">
               <svg
                 width="1.3em"
                 height="1.3em"
                 viewBox="0 0 16 16"
-                class="bi bi-hand-thumbs-up"
+                class="bi bi-hand-thumbs-up animate__animated"
+                :class="classFunc()"
                 fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"
                 v-on:click="addFraction($event)"
@@ -46,7 +47,7 @@
                 width="1.3em"
                 height="1.3em"
                 viewBox="0 0 16 16"
-                class="bi bi-hand-thumbs-down"
+                class="bi bi-hand-thumbs-down animate__animated"
                 fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"
                 v-on:click="lessFraction($event)"
@@ -151,7 +152,11 @@ export default {
       var o = Object.assign({}, this.store_val);
       db.updateStoreOg(o, (response) => console.log(response));
     },
-    addFraction: function() {
+    addFraction: function(event) {
+      event.srcElement.classList.remove("animate__fadeIn");
+      setTimeout(() => {
+        event.srcElement.classList.add("animate__fadeIn");
+      }, 0);
       var find_obj = this.storeFraction_obj[this.store_val.id];
       this.score += 1;
       if (find_obj != undefined) {
@@ -165,7 +170,11 @@ export default {
         this.updataStoreFraction();
       }
     },
-    lessFraction: function() {
+    lessFraction: function(event) {
+      event.srcElement.classList.remove("animate__fadeIn");
+      setTimeout(() => {
+        event.srcElement.classList.add("animate__fadeIn");
+      }, 0);
       var find_obj = this.storeFraction_obj[this.store_val.id];
       this.score -= 1;
       if (find_obj != undefined) {
@@ -176,7 +185,7 @@ export default {
       } else {
         this.storeFraction_subobj.id = this.store_val.id;
         this.storeFraction_subobj.score = this.storeFraction_subobj.score - 1;
-         this.updataStoreFraction();
+        this.updataStoreFraction();
       }
     },
     updataStoreFraction: function() {
@@ -184,9 +193,12 @@ export default {
         var o = Object.assign({}, this.storeFraction_subobj);
         db.incStoreScore(o, (response) => console.log(response));
         delete this.storeFraction_obj[this.store_val.id];
-        this.storeFraction_subobj = {time: null, score: 0 };
+        this.storeFraction_subobj = { time: null, score: 0 };
       }, 5000);
       this.storeFraction_obj[this.store_val.id] = this.storeFraction_subobj;
+    },
+    classFunc: function(isclick) {
+      return [{ animate__animated: isclick }, { animate__fadeIn: isclick }];
     },
   },
   created: function() {
@@ -209,5 +221,18 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+}
+.box {
+  transition: box-shadow 0.3s;
+  float: left;
+}
+.card:hover {
+  box-shadow: 0 0 20px rgba(33, 33, 33, 0.2);
+}
+.bi-hand-thumbs-up:hover{
+  box-shadow: 0 0 20px rgba(0, 102, 51,0.8); 
+}
+.bi-hand-thumbs-down:hover{
+  box-shadow: 0 0 20px rgba(0, 102, 51,0.8); 
 }
 </style>

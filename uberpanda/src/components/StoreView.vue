@@ -1,6 +1,6 @@
 <template>
   <div id="storeview" class="container">
-    <div class="row">
+    <div class="row ">
       <div class="col">
         <a
           @click="onFoodpandaClick"
@@ -9,13 +9,13 @@
           <img
             alt="foodpanda"
             src="../assets/foodpanda.jpg"
-            class="rounded img-thumbnail"
+            class="rounded img-thumbnail  mb-1"
             style="max-width: 200px; cursor: pointer"
           />
         </a>
         <ul class="list-group list-group-flush">
           <li
-            class="list-group-item"
+            class="list-group-item "
             style="border: none;"
             v-for="(value, index) in foodpanda"
             :key="index"
@@ -34,7 +34,7 @@
           <img
             alt="ubereat"
             src="../assets/ubereat.jpg"
-            class="rounded img-thumbnail"
+            class="rounded img-thumbnail mb-1"
             style="max-width: 200px; cursor: pointer"
         /></a>
         <ul class="list-group list-group-flush">
