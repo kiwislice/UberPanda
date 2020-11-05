@@ -67,4 +67,19 @@ export default {
   color: #2c3e50;
   margin-top: 10px;
 }
+a.exact-active.active.m-3.nav-link {
+    color: #fff;
+    background-color: #007bff;
+    opacity: 1;
+}
+a.m-3.nav-link {
+   color: #fff;
+    background-color: #007bff;
+    opacity:0.3;
+}
+ /* a.backg {
+    color: #fff;
+    background-color: #007bff;
+    opacity:0.5;
+} */
 </style>
