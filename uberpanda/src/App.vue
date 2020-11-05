@@ -50,7 +50,7 @@ export default {
         "m-3",
         "nav-link",
         { animate__animated: isHovering },
-        { animate__bounce: isHovering },
+        { animate__fadeIn: isHovering },
       ];
     },
   },
