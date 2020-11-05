@@ -7,7 +7,7 @@ const DB_URL = "https://evident-lamprey-59.hasura.app/v1/graphql";
 
 const GET_ALL_STORE = gql`
   query allStore {
-    store(distinct_on: id) {
+    store(order_by: {score: desc, id: desc}) {
       id
       name
       url

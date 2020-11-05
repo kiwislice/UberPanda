@@ -81,7 +81,9 @@ export default {
       db.getAllStores(
         (response) => (
           (this.stores = response.data.data.store),
+          console.log(response.data.data.store),
           this.stores.forEach((element) => {
+            // console.log(element);
             if (element.url.search("ubereat") > 0) 
               this.ubereat.push(element);
             if (element.url.search("foodpanda") > 0)
