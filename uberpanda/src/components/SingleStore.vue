@@ -21,7 +21,14 @@
     <div class="col-2 p-0">
       <div class="row mx-auto ">
         <div class="col-12">
-          <label style="font-size:30px">{{ score }}</label>
+          <label style="font-size:30px;margin-bottom: 0rem;">{{ score }}</label>
+        </div>
+        <div class="col-12">
+          <div class="row ">
+            <a :href="store_val.googleSearchUrl" target="_blank" style="display: block;margin-left: auto;margin-right: auto;" class="hovershadow">
+              <img src="../assets/google.jpeg" class="googleImgStyle" />
+            </a>
+          </div>
         </div>
         <div class="col-12">
           <div class="row ">
@@ -74,6 +81,8 @@ const panda_dec = /<meta name="description" content="(.*)">/i;
 const uber_title_reg = /<meta data-rh="true" name="og:title" content="(.*)"\/><meta data-rh="true" name="description"/;
 const uber_dec = /meta data-rh="true" name="description" content="(.*)" itemprop="description"\/>/;
 const uber_img_reg = /meta data-rh="true" property="og:image" content="(.*.jpeg)"\/>/;
+const cors = "https://cors-anywhere.herokuapp.com/";
+const GOOGLE_SEARCH = "https://www.google.com/search?q=";
 export default {
   name: "SingleStore",
   props: {
@@ -93,12 +102,14 @@ export default {
   methods: {
     girPage() {
       this.score = this.store_val.score;
+      this.store_val.googleSearchUrl = `${GOOGLE_SEARCH}${this.store_val.name}`;
       if (this.store_val.title === null) {
         this.notHaveTitleValue();
       } else {
         this.haveTitleValue();
       }
     },
+    
     notHaveTitleValue: function() {
       this.getStoreInfo();
     },
@@ -115,7 +126,6 @@ export default {
       this.description = this.store_val.description;
     },
     getStoreInfo: function() {
-      const cors = "https://cors-anywhere.herokuapp.com/";
       const url = this.store_val.url;
       axios.get(`${cors}${url}`).then(
         (response) => {
@@ -234,5 +244,15 @@ export default {
 }
 .bi-hand-thumbs-down:hover{
   box-shadow: 0 0 20px rgba(0, 102, 51,0.8); 
+}
+.hovershadow:hover{
+  box-shadow: 0 0 20px rgba(33, 33, 33, 0.2);
+      border-radius: 50px;
+}
+.googleImgStyle{
+  width: 40px; 
+  height: 40px;
+  border-radius:50px;
+  border:1px solid #939699;
 }
 </style>
