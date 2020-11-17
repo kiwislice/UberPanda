@@ -6,7 +6,7 @@
         to="/"
         :class="classFunc(isHoveringRoot)"
         v-on:mouseover.native="isHoveringRoot = true"
-         v-on:mouseleave.native="isHoveringRoot = false"
+        v-on:mouseleave.native="isHoveringRoot = false"
         exact
         >店家清單</router-link
       >
@@ -14,22 +14,26 @@
         to="/foo"
         :class="classFunc(isHoveringfoo)"
         v-on:mouseover.native="isHoveringfoo = true"
-         v-on:mouseleave.native="isHoveringfoo = false"
+        v-on:mouseleave.native="isHoveringfoo = false"
         >新增頁面</router-link
       >
       <router-link
         to="/pricecomputer"
         :class="classFunc(isHoveringPricecomputer)"
-      v-on:mouseover.native="isHoveringPricecomputer = true"
-         v-on:mouseleave.native="isHoveringPricecomputer = false"
+        v-on:mouseover.native="isHoveringPricecomputer = true"
+        v-on:mouseleave.native="isHoveringPricecomputer = false"
         >金額計算</router-link
       >
+      <LoginView></LoginView>
     </ul>
+
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import LoginView from "./components/LoginView.vue";
+
 export default {
   name: "App",
   data() {
@@ -41,11 +45,11 @@ export default {
     };
   },
   methods: {
-    changePageTo: function(index) {
+    changePageTo: function (index) {
       console.log("changePageTo " + index);
       this.currentPage = index;
     },
-    classFunc: function(isHovering) {
+    classFunc: function (isHovering) {
       return [
         "m-3",
         "nav-link",
@@ -54,7 +58,9 @@ export default {
       ];
     },
   },
-  components: {},
+  components: {
+    LoginView,
+  },
 };
 </script>
 
@@ -68,16 +74,16 @@ export default {
   margin-top: 10px;
 }
 a.exact-active.active.m-3.nav-link {
-    color: #fff;
-    background-color: #007bff;
-    opacity: 1;
+  color: #fff;
+  background-color: #007bff;
+  opacity: 1;
 }
 a.m-3.nav-link {
-   color: #fff;
-    background-color: #007bff;
-    opacity:0.3;
+  color: #fff;
+  background-color: #007bff;
+  opacity: 0.3;
 }
- /* a.backg {
+/* a.backg {
     color: #fff;
     background-color: #007bff;
     opacity:0.5;
