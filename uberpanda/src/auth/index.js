@@ -2,7 +2,8 @@
 
 import axios from "axios";
 
-const SERVER = "http://localhost:3000";
+
+const SERVER = process.env.SERVER_URI || "https://soft-group-linebot-83714.herokuapp.com";
 
 
 async function getCookie() {
@@ -15,6 +16,7 @@ async function getCookie() {
 const AUTH_OBJ = {
   uid: null,
   isAuthenticated: false,
+  uname: null,
 };
 
 function setLocalStorage(name, data) {
@@ -32,28 +34,33 @@ function getLocalStorage(name) {
   return rtn;
 }
 
-
-async function login() {
+/**
+ * 建立帳號並登入
+ * @param {string} username 名稱
+ */
+async function login(username) {
   var auth = getLocalStorage('auth');
   if (auth && auth.isAuthenticated)
     return;
 
-  var rtn = {};
-  await axios.get(SERVER + '/auth/login')
+  await axios.post(SERVER + '/auth/login', { name: username })
     .then(response => {
-      rtn = response.data;
+      var rtn = response.data;
       console.log(response);
+
+      if (rtn.success) {
+        auth = Object.assign({}, AUTH_OBJ);
+        auth.uid = rtn.uid;
+        auth.isAuthenticated = true;
+        auth.uname = username;
+        setLocalStorage('auth', auth);
+      }
     })
     .catch(error => {
       console.log(error);
     });
-  if (rtn.uid) {
-    auth = Object.assign({}, AUTH_OBJ);
-    auth.uid = rtn.uid;
-    auth.isAuthenticated = true;
-    setLocalStorage('auth', auth);
-  }
 }
+
 
 async function getAuthObj() {
   var auth = getLocalStorage('auth');

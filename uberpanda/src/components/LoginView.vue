@@ -5,31 +5,40 @@
       <!-- show login when not authenticated -->
       <button
         v-if="!isAuthenticated"
-        @click="login"
+        @click="clickUserIcon"
         class="btn btn-info float-right"
       >
-        登入
+        路人
       </button>
       <!-- show logout when authenticated -->
       <button v-if="isAuthenticated" class="btn btn-info">
-        {{ user.name }}
+        {{ username }}
       </button>
     </div>
 
-    <div class="card float-right" style="width: 18rem" v-if="!loading">
+    <div class="card float-right" style="width: 18rem" v-if="showLoginCard">
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </p>
-        <input
-          type="text"
-          v-model="user.name"
-          placeholder="店家在Uber或Panda的網址"
-          class="mx-auto w-50 form-control mt-1"
-        />
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <h5 class="card-title">建立帳號</h5>
+        <p class="card-text">隨便給個名稱就好</p>
+
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            v-model="username"
+            placeholder="在這裡打字"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              @click="login"
+              :disabled="!loginable"
+            >
+              登入
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -46,25 +55,40 @@ export default {
       uid: null,
       isAuthenticated: false,
       loading: true,
-      user: {},
+      username: null,
+      showLoginCard: false,
+      loginable: false,
     };
   },
-  components: {  },
+  components: {},
+  watch: {
+    username: function (newVal, oldVal) {
+      this.loginable = !!(newVal && newVal.trim());
+    },
+  },
   methods: {
     // Log the user in
+    clickUserIcon() {
+      this.showLoginCard = !this.showLoginCard;
+    },
     login() {
-      // auth.login().then(() => this.checkLogined());
+      console.log("login.");
+      auth.login(this.username).then(() => {
+        this.checkLogined();
+        this.showLoginCard = false;
+      });
     },
     async checkLogined() {
       var res = await auth.getAuthObj();
       this.uid = res.uid;
       this.isAuthenticated = res.isAuthenticated;
+      this.username = res.uname;
       this.loading = false;
       console.log("loading complete. " + this.isAuthenticated);
     },
   },
   mounted: function () {
-    // this.checkLogined();
+    this.checkLogined();
   },
 };
 </script>
