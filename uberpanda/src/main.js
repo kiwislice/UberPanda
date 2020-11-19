@@ -5,12 +5,14 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'animate.css/animate.css'
+import './style/main.css'
 import StoreView from './components/StoreView.vue'
 import Store from './components/Store.vue'
 import PriceComputer from './components/PriceComputer.vue'
+import SlideUpDown from 'vue-slide-up-down'
 
 
-
+Vue.component('slide-up-down', SlideUpDown)
 Vue.config.productionTip = false
 Vue.use(VueRouter, BootstrapVue)
 

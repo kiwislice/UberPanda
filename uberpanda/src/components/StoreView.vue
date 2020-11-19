@@ -1,9 +1,8 @@
 <template>
-  <div id="storeview" class="container">
+  <div id="storeview" >
     <div class="row ">
-      <div class="col">
-        <a
-          @click="onFoodpandaClick"
+      <div class="col text-center">
+        <a @click="onFoodpandaClick"
           href="https://www.foodpanda.com.tw/restaurants/new?lat=22.6506979&lng=120.3038248&vertical=restaurants"
         >
           <img
@@ -13,6 +12,7 @@
             style="max-width: 200px; cursor: pointer"
           />
         </a>
+       
         <ul class="list-group list-group-flush">
           <li
             class="list-group-item "
@@ -26,7 +26,7 @@
           </li>
         </ul>
       </div>
-      <div class="col">
+      <div class="col text-center">
         <a
           @click="onUbereatClick"
           href="https://www.ubereats.com/tw/feed?pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMiVFNSU4RCU5QSVFNiU4NCU5QiVFNCVCOCU4MCVFOCVCNyVBRjM2NiVFOCU5OSU5RjE0JUU4JTk5JTlGJTIyJTJDJTIycmVmZXJlbmNlJTIyJTNBJTIyQ2hJSlU1bnkwZnNFYmpRUlhfQWlMSGl6a2tBJTIyJTJDJTIycmVmZXJlbmNlVHlwZSUyMiUzQSUyMmdvb2dsZV9wbGFjZXMlMjIlMkMlMjJsYXRpdHVkZSUyMiUzQTIyLjY1MDU1MDYlMkMlMjJsb25naXR1ZGUlMjIlM0ExMjAuMzAzNjI1NCU3RA%3D%3D"
@@ -55,7 +55,6 @@
 </template>
 
 <script>
-
 // import axios from "axios";
 import db from "./Repository.js";
 import SingleStore from "../components/SingleStore.vue";
@@ -76,14 +75,12 @@ export default {
   },
   components: { SingleStore },
   methods: {
-
-    query: function () {
+    query: function() {
       db.getAllStores(
         (response) => (
           (this.stores = response.data.data.store),
-          console.log(response.data.data.store),
+          //  console.log(response.data.data.store),
           this.stores.forEach((element) => {
-            // console.log(element);
             if (element.url.search("ubereat") > 0) 
               this.ubereat.push(element);
             if (element.url.search("foodpanda") > 0)

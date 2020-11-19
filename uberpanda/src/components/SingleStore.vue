@@ -25,7 +25,12 @@
         </div>
         <div class="col-12">
           <div class="row ">
-            <a :href="store_val.googleSearchUrl" target="_blank" style="display: block;margin-left: auto;margin-right: auto;" class="hovershadow">
+            <a
+              :href="store_val.googleSearchUrl"
+              target="_blank"
+              style="display: block;margin-left: auto;margin-right: auto;"
+              class="hovershadow"
+            >
               <img src="../assets/google.jpeg" class="googleImgStyle" />
             </a>
           </div>
@@ -79,7 +84,7 @@ import ubereat_icon from "../assets/ubereat_icon.jpeg";
 const panda_regex = /<title>([\s\S]*?)<\/title>/m;
 const panda_dec = /<meta name="description" content="(.*)">/i;
 const uber_title_reg = /<meta data-rh="true" name="og:title" content="(.*)"\/><meta data-rh="true" name="description"/;
-const uber_dec = /meta data-rh="true" name="description" content="(.*)" itemprop="description"\/>/;
+const uber_dec = /meta data-rh="true" name="description" content="(.*)"\/>/;
 const uber_img_reg = /meta data-rh="true" property="og:image" content="(.*.jpeg)"\/>/;
 const cors = "https://cors-anywhere.herokuapp.com/";
 const GOOGLE_SEARCH = "https://www.google.com/search?q=";
@@ -97,10 +102,19 @@ export default {
       score: 0,
       storeFraction_obj: {},
       storeFraction_subobj: { time: null, score: 0 },
+      ticker: 0,
+      checked: false,
     };
   },
   methods: {
     girPage() {
+      // this.setTickerCount(0, (response) => {
+      //   if (response.data[this.store_val.name] !== null) {
+      //     this.ticker = response.data[this.store_val.name].tickerScore;
+      //     this.store_val.ticker = this.ticker;
+      //   }
+      // });
+
       this.score = this.store_val.score;
       this.store_val.googleSearchUrl = `${GOOGLE_SEARCH}${this.store_val.name}`;
       if (this.store_val.title === null) {
@@ -109,19 +123,21 @@ export default {
         this.haveTitleValue();
       }
     },
-    
     notHaveTitleValue: function() {
       this.getStoreInfo();
     },
     haveTitleValue: function() {
-      if (this.store_val.url.match(/panda/) && this.store_val.image === "") {
+      if (this.store_val.url.match(/panda/)) {
         this.img_url = panda_icon;
       } else if (
         this.store_val.url.match(/ubereat/) &&
         this.store_val.image === ""
-      )
+      ){
         this.img_url = ubereat_icon;
-      else this.img_url = this.store_val.image;
+      }
+      else{
+        this.img_url = this.store_val.image;
+      } 
       this.title = this.store_val.title;
       this.description = this.store_val.description;
     },
@@ -207,6 +223,23 @@ export default {
       }, 5000);
       this.storeFraction_obj[this.store_val.id] = this.storeFraction_subobj;
     },
+    checkBokClick: function() {
+      if (!this.checked) {
+        // this.setTickerCount(1, (response) => {
+        //   console.log(response.data);
+        //   console.log(response.data[this.store_val.name]);
+        //   this.ticker = response.data[this.store_val.name].tickerScore;
+        // });
+      }
+    },
+    // setTickerCount: function(tickerScore, resCallback) {
+    //   var API_URL =
+    //     "http://127.0.0.1:3001/home/" + this.store_val.name + "/" + tickerScore;
+    //   // console.log(API_URL);
+    //   axios
+    //     .get(`${API_URL}`)
+    //     .then((response) => resCallback && resCallback(response));
+    // },
     classFunc: function(isclick) {
       return [{ animate__animated: isclick }, { animate__fadeIn: isclick }];
     },
@@ -239,20 +272,20 @@ export default {
 .card:hover {
   box-shadow: 0 0 20px rgba(33, 33, 33, 0.2);
 }
-.bi-hand-thumbs-up:hover{
-  box-shadow: 0 0 20px rgba(0, 102, 51,0.8); 
+.bi-hand-thumbs-up:hover {
+  box-shadow: 0 0 20px rgba(0, 102, 51, 0.8);
 }
-.bi-hand-thumbs-down:hover{
-  box-shadow: 0 0 20px rgba(0, 102, 51,0.8); 
+.bi-hand-thumbs-down:hover {
+  box-shadow: 0 0 20px rgba(0, 102, 51, 0.8);
 }
-.hovershadow:hover{
+.hovershadow:hover {
   box-shadow: 0 0 20px rgba(33, 33, 33, 0.2);
-      border-radius: 50px;
+  border-radius: 50px;
 }
-.googleImgStyle{
-  width: 40px; 
+.googleImgStyle {
+  width: 40px;
   height: 40px;
-  border-radius:50px;
-  border:1px solid #939699;
+  border-radius: 50px;
+  border: 1px solid #939699;
 }
 </style>

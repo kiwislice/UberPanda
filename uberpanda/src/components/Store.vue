@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="editstore">
+  <div id="Store">
+    <div class="editstore text-center">
       <input
         type="text"
         v-model="editStore.name"
