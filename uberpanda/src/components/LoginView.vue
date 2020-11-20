@@ -84,6 +84,7 @@ export default {
       this.isAuthenticated = res.isAuthenticated;
       this.username = res.uname;
       this.loading = false;
+      // console.log("username: " + this.username);
       console.log("loading complete. " + this.isAuthenticated);
     },
   },

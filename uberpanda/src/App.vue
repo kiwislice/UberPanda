@@ -1,19 +1,20 @@
-
-<template >
+<template>
   <div class="page-wrapper chiller-theme" :class="toggled">
     <a
       id="show-sidebar"
       class="btn btn-sm btn-dark"
       href="#"
       v-on:click="sidebarOpen()"
-      style="z-index:1040"
+      style="z-index: 1040"
     >
       <i class="fas fa-bars"></i>
     </a>
-    <nav id="sidebar" class="sidebar-wrapper" style="z-index:1040">
+    <nav id="sidebar" class="sidebar-wrapper" style="z-index: 1040">
       <div class="sidebar-content">
         <div class="sidebar-brand">
-          <a href="#" style="font-size: 25px;text-transform: capitalize;">FIS-UberPanda</a>
+          <a href="#" style="font-size: 25px; text-transform: capitalize"
+            >FIS-UberPanda</a
+          >
           <div id="close-sidebar" v-on:click="sidebarClose()">
             <i class="fas fa-times"></i>
           </div>
@@ -27,19 +28,24 @@
             />
           </div>
           <div class="user-info">
-            <span class="user-name"
-              >Jhon
-              <strong>Smith</strong>
-            </span>
-            <span class="user-role">Administrator</span>
-            <span class="user-status">
+            <span class="user-name" v-if="isAuthenticated">{{this.username}}</span>
+            <span class="user-name" v-else>路人</span>
+            <!-- <span class="user-role">Administrator</span> -->
+
+           
+             <span class="user-status" v-if="isAuthenticated">
               <i class="fa fa-circle"></i>
-              <span>Online</span>
+              <span>已登入</span>
             </span>
+            <span class="user-status" v-else>
+              <i class="far fa-circle"></i>
+              <span>未登入</span>
+            </span>
+           
           </div>
         </div>
         <!-- sidebar-header  -->
-         <!-- s<div class="sidebar-search">
+        <!-- s<div class="sidebar-search">
           <div>
             <div class="input-group">
               <input
@@ -58,11 +64,8 @@
         <!-- sidebar-search  -->
         <div class="sidebar-menu">
           <ul>
-              <li class="header-menu">
+            <li class="header-menu">
               <span>Menu</span>
-            </li>
-            <li>
-              <LoginView></LoginView>
             </li>
             <li>
               <router-link
@@ -82,8 +85,7 @@
                 :class="classFunc(isHoveringfoo)"
                 v-on:mouseover.native="isHoveringfoo = true"
                 v-on:mouseleave.native="isHoveringfoo = false"
-                ><i class="far fa-edit"></i>
-                <span>店家新增</span></router-link
+                ><i class="far fa-edit"></i> <span>店家新增</span></router-link
               >
             </li>
             <li>
@@ -105,12 +107,14 @@
                 <span>Dashboard測試</span>
                 <span class="badge badge-pill badge-warning">New</span>
               </a>
-              <slide-up-down :active="active" :duration="500" class="slide-up-down">
+              <slide-up-down
+                :active="active"
+                :duration="500"
+                class="slide-up-down"
+              >
                 <ul>
                   <li>
-                    <a href="#"
-                      >Dashboard 1
-                    </a>
+                    <a href="#">Dashboard 1 </a>
                   </li>
                   <li>
                     <a href="#">Dashboard 2</a>
@@ -147,8 +151,9 @@
     <!-- sidebar-wrapper  -->
     <div class="page-content">
       <div class="container-fluid">
-       <!-- <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="height:50px;background-color: #2196F3;"></nav>-->
-         <router-view ></router-view>
+        <LoginView ref="login" v-if="!isAuthenticated"></LoginView>
+        <!-- <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="height:50px;background-color: #2196F3;"></nav>-->
+        <router-view></router-view>
       </div>
     </div>
     <!-- page-content" -->
@@ -168,6 +173,8 @@ export default {
       isHoveringPricecomputer: false,
       toggled: "toggled",
       active: false,
+      isAuthenticated:false,
+      username:null,
     };
   },
   methods: {
@@ -196,6 +203,16 @@ export default {
   components: {
     LoginView,
   },
+  mounted: function () {
+    this.$watch(
+  (new_value, old_value) => {
+    this.isAuthenticated = new_value.$refs.login.isAuthenticated,
+    this.username = new_value.$refs.login.username,
+    console.log(new_value)
+  })
+
+  },
+
 };
 </script>
 
