@@ -3,7 +3,7 @@
 import axios from "axios";
 
 
-const SERVER = process.env.VUE_APP_SERVER_URI || "https://soft-group-linebot-83714.herokuapp.com";
+const SERVER = process.env.local.VUE_APP_SERVER_URI || "https://soft-group-linebot-83714.herokuapp.com";
 
 
 async function getCookie() {
