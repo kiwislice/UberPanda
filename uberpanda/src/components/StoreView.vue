@@ -1,22 +1,23 @@
 <template>
-  <div id="storeview" >
-    <div class="row ">
+  <div id="storeview">
+    <div class="row">
       <div class="col text-center">
-        <a @click="onFoodpandaClick"
+        <a
+          @click="onFoodpandaClick"
           href="https://www.foodpanda.com.tw/restaurants/new?lat=22.6506979&lng=120.3038248&vertical=restaurants"
         >
           <img
             alt="foodpanda"
             src="../assets/foodpanda.jpg"
-            class="rounded img-thumbnail  mb-1"
+            class="rounded img-thumbnail mb-1"
             style="max-width: 200px; cursor: pointer"
           />
         </a>
-       
+
         <ul class="list-group list-group-flush">
           <li
-            class="list-group-item "
-            style="border: none;"
+            class="list-group-item"
+            style="border: none"
             v-for="(value, index) in foodpanda"
             :key="index"
           >
@@ -40,12 +41,13 @@
         <ul class="list-group list-group-flush">
           <li
             class="list-group-item"
-            style="border: none;"
+            style="border: none"
             v-for="(value, index) in ubereat"
             :key="index"
           >
             <div class="">
               <SingleStore v-model="ubereat[index]"></SingleStore>
+              <!-- <StoreScore v-model="ubereat[index]"></StoreScore> -->
             </div>
           </li>
         </ul>
@@ -58,6 +60,7 @@
 // import axios from "axios";
 import db from "./Repository.js";
 import SingleStore from "../components/SingleStore.vue";
+import StoreScore from "../components/StoreScore.vue";
 
 export default {
   name: "App",
@@ -73,30 +76,29 @@ export default {
       currentPlatform: "foodpanda",
     };
   },
-  components: { SingleStore },
+  components: { SingleStore, StoreScore },
   methods: {
-    query: function() {
+    query: function () {
       db.getAllStores(
         (response) => (
           (this.stores = response.data.data.store),
           //  console.log(response.data.data.store),
           this.stores.forEach((element) => {
-            if (element.url.search("ubereat") > 0) 
-              this.ubereat.push(element);
+            if (element.url.search("ubereat") > 0) this.ubereat.push(element);
             if (element.url.search("foodpanda") > 0)
               this.foodpanda.push(element);
           })
         )
       );
     },
-    onFoodpandaClick: function() {
+    onFoodpandaClick: function () {
       this.currentPlatform = "foodpanda";
     },
-    onUbereatClick: function() {
+    onUbereatClick: function () {
       this.currentPlatform = "ubereat";
     },
   },
-  created: function() {
+  created: function () {
     this.query();
   },
 };

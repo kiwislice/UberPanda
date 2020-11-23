@@ -1,5 +1,6 @@
 
 
+import Vue from "vue";
 import axios from "axios";
 
 
@@ -12,12 +13,6 @@ async function getCookie() {
   console.log(rtn);
   return rtn;
 }
-
-const AUTH_OBJ = {
-  uid: null,
-  isAuthenticated: false,
-  uname: null,
-};
 
 function setLocalStorage(name, data) {
   if (data) {
@@ -34,55 +29,114 @@ function getLocalStorage(name) {
   return rtn;
 }
 
-/**
- * 建立帳號並登入
- * @param {string} username 名稱
- */
-async function login(username) {
-  var auth = getLocalStorage('auth');
-  if (auth && auth.isAuthenticated)
-    return;
 
-  await axios.post(SERVER + '/auth/login', { name: username })
-    .then(response => {
-      var rtn = response.data;
-      console.log(response);
 
-      if (rtn.success) {
-        auth = Object.assign({}, AUTH_OBJ);
-        auth.uid = rtn.uid;
-        auth.isAuthenticated = true;
-        auth.uname = username;
-        setLocalStorage('auth', auth);
+let instance;
+
+/** Returns the current instance of the SDK */
+export const getInstance = () => instance;
+
+/** Creates an instance of the Auth0 SDK. If one has already been created, it returns that instance */
+export const useAuth0 = ({
+  // onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
+  // redirectUri = window.location.origin,
+  ...options
+}) => {
+  if (instance) return instance;
+
+  // The 'instance' is simply a Vue object
+  instance = new Vue({
+    data() {
+      return {
+        loading: true,
+        isAuthenticated: false,
+        user: {
+          uid: null,
+          name: null,
+        },
+        error: null
+      };
+    },
+    methods: {
+      /**
+       * 建立帳號並登入
+       * @param {string} username 名稱
+       */
+      login: async function (username) {
+        await axios.post(SERVER + '/auth/login', { name: username })
+          .then(response => {
+            var rtn = response.data;
+            console.log(response);
+
+            if (rtn.success) {
+              this.user = { uid: rtn.uid, name: username, }
+              this.isAuthenticated = true;
+              setLocalStorage('auth', this.user);
+            }
+          })
+          .catch(error => {
+            this.error = error;
+            console.log(error);
+          });
+      },
+
+      /**
+       * 取得LocalStorage儲存的登入資料
+       */
+      getAuthObj: async function () {
+        var auth = getLocalStorage('auth');
+        if (!auth)
+          return Object.assign({}, { uid: null, name: null, });
+        console.log(`getAuthObj=${auth}`);
+        return auth;
+      },
+
+      /**
+       * 檢查uid是否存在
+       * @param {string} uid uid
+       * @returns {boolean} true=存在
+       */
+      existByUserId: async function (uid) {
+        if (uid) {
+          var rtn = null;
+          await axios.get(SERVER + `/auth/isAuthenticated/${uid}`)
+            .then(response => {
+              rtn = response.data;
+              console.log(response);
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+        return rtn.isAuthenticated;
+      },
+
+    },
+    async created() {
+      var obj = await this.getAuthObj();
+      if (obj.uid && await this.existByUserId(obj.uid)) {
+        // 已登入
+        this.isAuthenticated = true;
+        this.user = obj;
+        this.error = null;
+      } else {
+        localStorage.clear();
+        obj = await this.getAuthObj();
+        this.isAuthenticated = false;
+        this.user = obj;
       }
-    })
-    .catch(error => {
-      console.log(error);
-    });
-}
+      this.loading = false;
+      console.log("loading complete. " + this.isAuthenticated);
+    },
+  });
 
-
-async function getAuthObj() {
-  var auth = getLocalStorage('auth');
-  if (!auth)
-    return Object.assign({}, AUTH_OBJ);
-  // var rtn = null;
-  // await axios.get(SERVER + `/auth/isAuthenticated/${uid}`)
-  //   .then(response => {
-  //     rtn = response.data;
-  //     console.log(response);
-  //   })
-  //   .catch(error => {
-  //     console.log(error);
-  //   });
-  console.log(auth);
-  return auth;
-}
-
-
-export default {
-  login,
-  getAuthObj,
+  return instance;
 };
 
-
+// Create a simple Vue plugin to expose the wrapper object throughout the application
+export const Auth0Plugin = {
+  install(Vue, options) {
+    console.log(`Auth0Plugin, install`);
+    Vue.prototype.$auth = useAuth0(options);
+  }
+};

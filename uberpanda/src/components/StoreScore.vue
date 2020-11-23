@@ -1,18 +1,18 @@
 <template>
-  <div class="loginview position-fixed">
+  <div class="storescore">
     <!-- Check that the SDK client is not currently loading before accessing is methods -->
     <div v-if="!$auth.loading">
       <!-- show login when not authenticated -->
       <button
-        v-if="!$auth.isAuthenticated"
+        v-if="!isAuthenticated"
         @click="clickUserIcon"
         class="btn btn-info float-right"
       >
         路人
       </button>
       <!-- show logout when authenticated -->
-      <button v-if="$auth.isAuthenticated" class="btn btn-info">
-        {{ $auth.user.name }}
+      <button v-if="isAuthenticated" class="btn btn-info">
+        {{ username }}
       </button>
     </div>
 
@@ -46,11 +46,13 @@
 
 
 <script>
+
 export default {
-  name: "loginview",
+  name: "storescore",
   data() {
     return {
       uid: null,
+      isAuthenticated: false,
       loading: true,
       username: null,
       showLoginCard: false,
@@ -59,9 +61,9 @@ export default {
   },
   components: {},
   watch: {
-    username: function (newVal, oldVal) {
-      this.loginable = !!(newVal && newVal.trim());
-    },
+    // username: function (newVal, oldVal) {
+    //   this.loginable = !!(newVal && newVal.trim());
+    // },
   },
   methods: {
     // Log the user in
@@ -70,26 +72,29 @@ export default {
     },
     login() {
       console.log("login.");
-      this.$auth.login(this.username).then(() => {
+      auth.login(this.username).then(() => {
+        this.checkLogined();
         this.showLoginCard = false;
-        this.uid = this.$auth.user.uid;
-        this.username = this.$auth.user.name;
       });
     },
+    async checkLogined() {
+      var res = await auth.getAuthObj();
+      this.uid = res.uid;
+      this.isAuthenticated = res.isAuthenticated;
+      this.username = res.uname;
+      this.loading = false;
+      // console.log("username: " + this.username);
+      console.log("loading complete. " + this.isAuthenticated);
+    },
   },
-  mounted: function () {},
+  mounted: function () {
+    // this.checkLogined();
+  },
 };
 </script>
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.loginview {
-  top: 2em;
-  right: 2em;
-  z-index: 10;
-}
-.loginview * {
-  right: 0;
-}
+
 </style>

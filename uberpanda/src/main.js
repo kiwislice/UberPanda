@@ -10,11 +10,14 @@ import StoreView from './components/StoreView.vue'
 import Store from './components/Store.vue'
 import PriceComputer from './components/PriceComputer.vue'
 import SlideUpDown from 'vue-slide-up-down'
+import { Auth0Plugin } from "./auth/index";
 
 
 Vue.component('slide-up-down', SlideUpDown)
 Vue.config.productionTip = false
-Vue.use(VueRouter, BootstrapVue)
+Vue.use(VueRouter);
+Vue.use(BootstrapVue);
+Vue.use(Auth0Plugin);
 
 // 0. 如果使用模块化机制编程，导入Vue和VueRouter，要调用 Vue.use(VueRouter)
 
@@ -37,7 +40,7 @@ const routes = [
 // 3. 创建 router 实例，然后传 `routes` 配置
 // 你还可以传别的配置参数, 不过先这么简单着吧。
 const router = new VueRouter({
-  mode:'hash',
+  mode: 'hash',
   linkActiveClass: "active",
   linkExactActiveClass: "exact-active",
   routes // (缩写) 相当于 routes: routes

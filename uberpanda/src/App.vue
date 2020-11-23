@@ -28,12 +28,13 @@
             />
           </div>
           <div class="user-info">
-            <span class="user-name" v-if="isAuthenticated">{{this.username}}</span>
+            <span class="user-name" v-if="$auth.isAuthenticated">{{
+              $auth.user.name
+            }}</span>
             <span class="user-name" v-else>路人</span>
             <!-- <span class="user-role">Administrator</span> -->
 
-           
-             <span class="user-status" v-if="isAuthenticated">
+            <span class="user-status" v-if="$auth.isAuthenticated">
               <i class="fa fa-circle"></i>
               <span>已登入</span>
             </span>
@@ -41,7 +42,6 @@
               <i class="far fa-circle"></i>
               <span>未登入</span>
             </span>
-           
           </div>
         </div>
         <!-- sidebar-header  -->
@@ -151,7 +151,7 @@
     <!-- sidebar-wrapper  -->
     <div class="page-content">
       <div class="container-fluid">
-        <LoginView ref="login" v-if="!isAuthenticated"></LoginView>
+        <LoginView ref="login" v-if="!$auth.isAuthenticated"></LoginView>
         <!-- <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="height:50px;background-color: #2196F3;"></nav>-->
         <router-view></router-view>
       </div>
@@ -173,8 +173,6 @@ export default {
       isHoveringPricecomputer: false,
       toggled: "toggled",
       active: false,
-      isAuthenticated:false,
-      username:null,
     };
   },
   methods: {
@@ -204,15 +202,13 @@ export default {
     LoginView,
   },
   mounted: function () {
-    this.$watch(
-  (new_value, old_value) => {
-    this.isAuthenticated = new_value.$refs.login.isAuthenticated,
-    this.username = new_value.$refs.login.username,
-    console.log(new_value)
-  })
-
+    //   this.$watch(
+    // (new_value, old_value) => {
+    //   this.isAuthenticated = new_value.$refs.login.isAuthenticated,
+    //   this.username = new_value.$refs.login.username,
+    //   console.log(new_value)
+    // })
   },
-
 };
 </script>
 
