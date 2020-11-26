@@ -1,7 +1,7 @@
 <template>
   <div id="storeview">
     <div class="row">
-      <div class="col text-center">
+      <div class="col text-center ">
         <a
           @click="onFoodpandaClick"
           href="https://www.foodpanda.com.tw/restaurants/new?lat=22.6506979&lng=120.3038248&vertical=restaurants"
@@ -14,7 +14,7 @@
           />
         </a>
 
-        <ul class="list-group list-group-flush">
+        <ul class="list-group list-group-flush ">
           <li
             class="list-group-item"
             style="border: none"

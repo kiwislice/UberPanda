@@ -4,10 +4,10 @@
       <a :href="store_val.url" target="_blank" style="text-decoration:none;">
         <div class="card">
           <div class="row no-gutters">
-            <div class="col-md-4">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
               <img :src="img_url" class="card-img img-center" />
             </div>
-            <div class="col-md-8">
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
               <div class="card-body">
                 <p class="card-text">
                   {{ title }}
