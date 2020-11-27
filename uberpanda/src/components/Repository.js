@@ -38,16 +38,21 @@ const UPDATE_STORE_OG = gql`
   }
 `;
 
-const INC_STORE_SCORE = gql`
-  mutation incStoreScore($id: Int!, $score: Int!) {
-    update_store(where: {id: {_eq: $id}}, _inc: {score: $score}) {
-      returning {
-        id
+const SAVE_STORE_SCORE = gql`
+  mutation saveStoreScore($user_id: String!, $user_id: String!, $score: Int!, $comment: String) {
+    insert_store_score_one(object: {user_id: $user_id, store_id: $store_id, score: $score, comment: $comment}, 
+                           on_conflict: {constraint: store_score_pkey, update_columns: [score, comment]}) {
+        user_id
+        store_id
         score
+        comment
       }
     }
   }
 `;
+
+
+
 
 export default {
   createStore: function (store, resCallback) {
@@ -77,12 +82,12 @@ export default {
       })
       .then((response) => resCallback && resCallback(response));
   },
-  incStoreScore: function (store, resCallback) {
-    var o = { id: store.id, score: store.score };
-    console.log("incStoreScore: %s", o);
+  saveStoreScore: async function (store, resCallback) {
+    var o = { user_id: store.user_id, store_id: store.store_id, score: store.score, comment: store.comment };
+    console.log("saveStoreScore: %s", o);
     axios
       .post(DB_URL, {
-        query: print(INC_STORE_SCORE),
+        query: print(SAVE_STORE_SCORE),
         variables: o,
       })
       .then((response) => resCallback && resCallback(response));
