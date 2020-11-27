@@ -18,14 +18,14 @@ function setLocalStorage(name, data) {
   if (data) {
     var s = JSON.stringify(data);
     localStorage.setItem(name, s);
-    console.log(`set localStorage ${name}=${s}`)
+    console.log(`setLocalStorage ${name}=${s}`)
   }
 }
 
 function getLocalStorage(name) {
   var data = localStorage.getItem(name);
   var rtn = JSON.parse(data);
-  console.log(`get localStorage ${name}=${rtn}`)
+  console.log(`getLocalStorage ${name}=${rtn}`)
   return rtn;
 }
 
@@ -87,7 +87,6 @@ export const useAuth0 = ({
         var auth = getLocalStorage('auth');
         if (!auth)
           return Object.assign({}, { uid: null, name: null, });
-        console.log(`getAuthObj=${auth}`);
         return auth;
       },
 
@@ -102,7 +101,7 @@ export const useAuth0 = ({
           await axios.get(SERVER + `/auth/isAuthenticated/${uid}`)
             .then(response => {
               rtn = response.data;
-              console.log(response);
+              console.log(`existByUserId ${JSON.stringify(response)}`);
             })
             .catch(error => {
               console.log(error);
@@ -114,6 +113,7 @@ export const useAuth0 = ({
     },
     async created() {
       var obj = await this.getAuthObj();
+      console.log(`getAuthObj=${JSON.stringify(obj)}`);
       if (obj.uid && await this.existByUserId(obj.uid)) {
         // 已登入
         this.isAuthenticated = true;
@@ -124,6 +124,7 @@ export const useAuth0 = ({
         obj = await this.getAuthObj();
         this.isAuthenticated = false;
         this.user = obj;
+        console.log(`localStorage.clear()`);
       }
       this.loading = false;
       console.log("loading complete. " + this.isAuthenticated);
@@ -136,7 +137,6 @@ export const useAuth0 = ({
 // Create a simple Vue plugin to expose the wrapper object throughout the application
 export const Auth0Plugin = {
   install(Vue, options) {
-    console.log(`Auth0Plugin, install`);
     Vue.prototype.$auth = useAuth0(options);
   }
 };
