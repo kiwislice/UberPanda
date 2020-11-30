@@ -16,6 +16,7 @@ const GET_ALL_STORE = gql`
       description
       image
       score
+      score_count
     }
   }
 `;
@@ -33,6 +34,18 @@ const UPDATE_STORE_OG = gql`
     update_store(where: {id: {_eq: $id}}, _set: {image: $image, title: $title, description: $description}){
       returning {
         id
+      }
+    }
+  }
+`;
+
+const FIND_ONE_STORE_SCORE = gql`
+  mutation findOneStoreScore($store_id: Int!, $user_id: String!) {
+    store_score_by_pk(store_id: $store_id, user_id: $user_id) {
+        user_id
+        store_id
+        score
+        comment
       }
     }
   }
@@ -81,6 +94,18 @@ export default {
         variables: o,
       })
       .then((response) => resCallback && resCallback(response));
+  },
+  getOneStoreScore: async function (store) {
+    var o = { user_id: store.user_id, store_id: store.store_id };
+    console.log("getOneStoreScore: %s", o);
+    var rtn = null;
+    await axios
+      .post(DB_URL, {
+        query: print(FIND_ONE_STORE_SCORE),
+        variables: o,
+      })
+      .then((response) => rtn = response.data.data.store_score_by_pk);
+    return rtn;
   },
   saveStoreScore: async function (store, resCallback) {
     var o = { user_id: store.user_id, store_id: store.store_id, score: store.score, comment: store.comment };
