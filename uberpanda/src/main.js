@@ -9,11 +9,13 @@ import './style/main.css'
 import StoreView from './components/StoreView.vue'
 import Store from './components/Store.vue'
 import PriceComputer from './components/PriceComputer.vue'
+import CommentDialog from './components/CommentDialog.vue'
 import SlideUpDown from 'vue-slide-up-down'
 import { Auth0Plugin } from "./auth/index";
 
 
 Vue.component('slide-up-down', SlideUpDown)
+Vue.component('CommentDialog', CommentDialog)
 Vue.config.productionTip = false
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);

@@ -155,6 +155,7 @@
         <!-- <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="height:50px;background-color: #2196F3;"></nav>-->
         <router-view></router-view>
       </div>
+    
     </div>
     <!-- page-content" -->
   </div>
@@ -162,7 +163,7 @@
 
 <script>
 import LoginView from "./components/LoginView.vue";
-
+import CommentDialog from "./components/CommentDialog.vue"
 export default {
   name: "App",
   data() {
@@ -173,6 +174,7 @@ export default {
       isHoveringPricecomputer: false,
       toggled: "toggled",
       active: false,
+      dialogIsShow:true,
     };
   },
   methods: {
@@ -199,7 +201,7 @@ export default {
     },
   },
   components: {
-    LoginView,
+    LoginView,CommentDialog
   },
   mounted: function () {
     //   this.$watch(

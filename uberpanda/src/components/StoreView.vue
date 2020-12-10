@@ -1,28 +1,15 @@
 <template>
   <div id="storeview">
     <div class="row">
-      <div class="col text-center ">
-        <a
-          @click="onFoodpandaClick"
-          href="https://www.foodpanda.com.tw/restaurants/new?lat=22.6506979&lng=120.3038248&vertical=restaurants"
-        >
-          <img
-            alt="foodpanda"
-            src="../assets/foodpanda.jpg"
-            class="rounded img-thumbnail mb-1"
-            style="max-width: 200px; cursor: pointer"
-          />
+      <div class="col text-center">
+        <a @click="onFoodpandaClick" href="https://www.foodpanda.com.tw/restaurants/new?lat=22.6506979&lng=120.3038248&vertical=restaurants">
+          <img alt="foodpanda" src="../assets/foodpanda.jpg" class="rounded img-thumbnail mb-1" style="max-width: 200px; cursor: pointer" />
         </a>
 
-        <ul class="list-group list-group-flush ">
-          <li
-            class="list-group-item"
-            style="border: none"
-            v-for="(value, index) in foodpanda"
-            :key="index"
-          >
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" style="border: none" v-for="(value, index) in foodpanda" :key="index">
             <div class="">
-              <SingleStore v-model="foodpanda[index]"></SingleStore>
+              <SingleStore v-model="foodpanda[index]" @single-store="getStore"></SingleStore>
             </div>
           </li>
         </ul>
@@ -32,27 +19,19 @@
           @click="onUbereatClick"
           href="https://www.ubereats.com/tw/feed?pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMiVFNSU4RCU5QSVFNiU4NCU5QiVFNCVCOCU4MCVFOCVCNyVBRjM2NiVFOCU5OSU5RjE0JUU4JTk5JTlGJTIyJTJDJTIycmVmZXJlbmNlJTIyJTNBJTIyQ2hJSlU1bnkwZnNFYmpRUlhfQWlMSGl6a2tBJTIyJTJDJTIycmVmZXJlbmNlVHlwZSUyMiUzQSUyMmdvb2dsZV9wbGFjZXMlMjIlMkMlMjJsYXRpdHVkZSUyMiUzQTIyLjY1MDU1MDYlMkMlMjJsb25naXR1ZGUlMjIlM0ExMjAuMzAzNjI1NCU3RA%3D%3D"
         >
-          <img
-            alt="ubereat"
-            src="../assets/ubereat.jpg"
-            class="rounded img-thumbnail mb-1"
-            style="max-width: 200px; cursor: pointer"
+          <img alt="ubereat" src="../assets/ubereat.jpg" class="rounded img-thumbnail mb-1" style="max-width: 200px; cursor: pointer"
         /></a>
         <ul class="list-group list-group-flush">
-          <li
-            class="list-group-item"
-            style="border: none"
-            v-for="(value, index) in ubereat"
-            :key="index"
-          >
+          <li class="list-group-item" style="border: none" v-for="(value, index) in ubereat" :key="index">
             <div class="">
-              <SingleStore v-model="ubereat[index]"></SingleStore>
+              <SingleStore v-model="ubereat[index]" @single-store="getStore"></SingleStore>
               <!-- <StoreScore v-model="ubereat[index]"></StoreScore> -->
             </div>
           </li>
         </ul>
       </div>
     </div>
+    <CommentDialog v-show="showModal" v-model="store" ref="input"></CommentDialog>
   </div>
 </template>
 
@@ -61,7 +40,6 @@
 import db from "./Repository.js";
 import SingleStore from "../components/SingleStore.vue";
 import StoreScore from "../components/StoreScore.vue";
-
 export default {
   name: "App",
   data() {
@@ -74,6 +52,8 @@ export default {
       ubereat: [],
       foodpanda: [],
       currentPlatform: "foodpanda",
+      showModal:false,
+      store:{}
     };
   },
   components: { SingleStore, StoreScore },
@@ -85,8 +65,7 @@ export default {
           //  console.log(response.data.data.store),
           this.stores.forEach((element) => {
             if (element.url.search("ubereat") > 0) this.ubereat.push(element);
-            if (element.url.search("foodpanda") > 0)
-              this.foodpanda.push(element);
+            if (element.url.search("foodpanda") > 0) this.foodpanda.push(element);
           })
         )
       );
@@ -97,9 +76,36 @@ export default {
     onUbereatClick: function () {
       this.currentPlatform = "ubereat";
     },
+    getStore: function (value,param) {
+      if(value === true){
+         Object.assign(this.store,param); 
+        this.$refs.input.singleStore = param;
+        this.getScoreComment(param.id);
+      }
+     this.showModal = value;
+    //  console.log(this.value);
+    },
+    getScoreComment:function(store_id){
+      var o = {};
+      o.user_id = this.$auth.user.uid;
+      o.store_id = store_id;
+      db.getOneStoreScore(o,(response) =>{
+        this.$refs.input.allComment = response.data.data.store_score;
+        if(response.data.data.store_score_by_pk != null){
+           this.$refs.input.sureStarFunc(response.data.data.store_score_by_pk.score );
+        this.$refs.input.comment =response.data.data.store_score_by_pk.comment;
+        }else{
+           this.$refs.input.sureStarFunc(0);
+           this.$refs.input.comment ="";
+        }
+      });
+    }
   },
   created: function () {
     this.query();
+  },
+  mounted: function () {
+
   },
 };
 </script>
