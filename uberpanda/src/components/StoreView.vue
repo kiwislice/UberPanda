@@ -94,10 +94,7 @@ export default {
       db.getAllStores(
         (response) => (
           (this.stores = response.data.data.store),
-          // console.log(this.stores),
-           this.stores.sort((a,b) => b.score - a.score || a.id - b.id),
-          //  this.stores.sort((a,b) => (a.id < b.id) ? 1 : ((b.id < a.id) ? -1 : 0)),
-          console.log(this.stores),
+          this.stores.sort((a, b) => b.score - a.score || a.id - b.id),
           this.stores.forEach((element) => {
             if (element.url.search("ubereat") > 0) this.ubereat.push(element);
             if (element.url.search("foodpanda") > 0) this.foodpanda.push(element);
@@ -124,9 +121,13 @@ export default {
           const arr = response.data.data.store_score;
           const reducer = (accumulator, currentValue) =>
             accumulator.score + currentValue.score;
-          found.score = arr.reduce(reducer) / arr.length;
+          var result = arr.reduce(reducer) / arr.length;
+          if (isNaN(result)) {
+            found.score = arr.reduce(reducer).score;
+          } else {
+            found.score = result;
+          }
           found.setStar();
-          console.log(found);
         }
       });
     },
