@@ -183,13 +183,18 @@ export default {
       db.updateStoreOg(o, (response) => console.log(response));
     },
     sureStar: function () {
-      var number = this.score.toFixed();
+      var number = Math.floor(this.score);
       var rem = this.score - number;
       for (var j = 1; j <= number; j++) {
         this["sureStar" + j] = RATESTAR;
-        if (j === number && rem != 0) 
-          this["sureStar" + (j + 1)] = HALFYSTAR;
+        if (j === number && rem != 0) this["sureStar" + (j + 1)] = HALFYSTAR;
       }
+    },
+    setStar: function () {
+      for (var i = 1; i <= 5; i++) {
+        this["sureStar" + i] = EMPTYSTAR;
+      }
+      this.sureStar();
     },
     updateValue: function () {
       this.$emit("single-store", true, this.store_val);

@@ -73,7 +73,14 @@
         >
           存檔
         </button>
-        <div
+        <div v-if="$auth.user.name === null"
+          id="msg"
+          class="alert alert-success animate__animated animate__delay-1s d-none"
+          role="alert"
+        >
+          {{ notlogin }}
+        </div>
+        <div v-else
           id="msg"
           class="alert alert-success animate__animated animate__delay-1s d-none"
           role="alert"
@@ -123,6 +130,7 @@ export default {
       comment: "",
       allComment: [],
       msg: "存檔成功",
+      notlogin:"未登入，存檔失敗!"
     };
   },
   methods: {
@@ -149,16 +157,20 @@ export default {
         this.fraction += 1;
       }
     },
-    saveComment: function (event) {
+    saveComment:async function (event) {
       var obj = {};
       obj.user_id = this.$auth.user.uid;
       obj.store_id = this.singleStore.id;
       obj.score = this.fraction;
       obj.comment = this.comment;
-      db.saveStoreScore(obj, (response) => console.log(response));
+     await db.saveStoreScore(obj, (response) => console.log(response));
       tools.addAnimate(event.srcElement, "animate__fadeIn");
       tools.removeClass(document.getElementById("msg"), "d-none");
       tools.addAnimate(document.getElementById("msg"), "animate__fadeOut");
+
+      if(this.$auth.user.uid != null){
+       await this.$parent.setChildScore(this.singleStore.id);
+      }
     },
   },
   components: {},

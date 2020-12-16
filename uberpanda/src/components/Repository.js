@@ -104,7 +104,7 @@ export default {
     var o = { user_id: store.user_id, store_id: store.store_id };
     console.log("getOneStoreScore: %s", o);
     var rtn = { singleComment: {}, allComment: [] };
-    axios
+    await axios
       .post(DB_URL, {
         query: print(FIND_ONE_STORE_SCORE),
         variables: o,
@@ -116,7 +116,7 @@ export default {
   saveStoreScore: async function (store, resCallback) {
     var o = { user_id: store.user_id, store_id: store.store_id, score: store.score, comment: store.comment };
     console.log("saveStoreScore: %s", o);
-    axios
+   await axios
       .post(DB_URL, {
         query: print(SAVE_STORE_SCORE),
         variables: o,
