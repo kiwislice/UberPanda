@@ -4,6 +4,8 @@ import { print } from "graphql";
 import gql from "graphql-tag";
 
 const DB_URL = "https://evident-lamprey-59.hasura.app/v1/graphql";
+const CACHE_PATH = (process.env.VUE_APP_SERVER_URI || "https://soft-group-linebot-83714.herokuapp.com") + '/uberPandaData';
+
 
 const GET_ALL_STORE = gql`
   query allStore {
@@ -76,6 +78,9 @@ export default {
   createStore: function (store, resCallback) {
     var o = { name: store.name, url: store.url };
     console.log("createStore: %s", o);
+    // 通知CACHE
+    axios.post(CACHE_PATH + '/createStore', o);
+    // 通知DB
     axios
       .post(DB_URL, {
         query: print(CREATE_STORE),
@@ -84,11 +89,16 @@ export default {
       .then((response) => resCallback && resCallback(response));
   },
   getAllStores: function (resCallback) {
-    axios
-      .post(DB_URL, {
-        query: print(GET_ALL_STORE),
-      })
-      .then((response) => resCallback && resCallback(response));
+    // 從CACHE取
+    axios.get(CACHE_PATH + '/getAllStores')
+      .then((res) => {
+        res && resCallback({ data: { data: { store: res.data } } });
+      });
+    // axios
+    //   .post(DB_URL, {
+    //     query: print(GET_ALL_STORE),
+    //   })
+    //   .then((response) => resCallback && resCallback(response));
   },
   updateStoreOg: function (store, resCallback) {
     var o = { id: store.id, title: store.title, description: store.description, image: store.image };
@@ -104,19 +114,25 @@ export default {
     var o = { user_id: store.user_id, store_id: store.store_id };
     console.log("getOneStoreScore: %s", o);
     var rtn = { singleComment: {}, allComment: [] };
-    await axios
-      .post(DB_URL, {
-        query: print(FIND_ONE_STORE_SCORE),
-        variables: o,
-      })
-      .then((response) => resCallback && resCallback(response));
+    // 從CACHE取
+    axios.post(CACHE_PATH + '/getOneStoreScore', o)
+      .then((res) => res && resCallback({ data: { data: res.data } }));
+    // await axios
+    //   .post(DB_URL, {
+    //     query: print(FIND_ONE_STORE_SCORE),
+    //     variables: o,
+    //   })
+    //   .then((response) => resCallback && resCallback(response));
     // rtn.singleComment = response.data.data.store_score_by_pk;
     // rtn.allComment = response.data.data.store_score;
   },
   saveStoreScore: async function (store, resCallback) {
     var o = { user_id: store.user_id, store_id: store.store_id, score: store.score, comment: store.comment };
     console.log("saveStoreScore: %s", o);
-   await axios
+    // 通知CACHE
+    axios.post(CACHE_PATH + '/saveStoreScore', o);
+    // 通知DB
+    await axios
       .post(DB_URL, {
         query: print(SAVE_STORE_SCORE),
         variables: o,
