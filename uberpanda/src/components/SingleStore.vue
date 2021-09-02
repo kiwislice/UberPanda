@@ -85,9 +85,9 @@ import panda_icon from "../assets/panda.jpeg";
 import ubereat_icon from "../assets/ubereat_icon.jpeg";
 const panda_regex = /<title>([\s\S]*?)<\/title>/m;
 const panda_dec = /<meta name="description" content="(.*)">/i;
-const uber_title_reg = /<meta data-rh="true" name="og:title" content="(.*)"\/><meta data-rh="true" name="description"/;
+const uber_title_reg = /meta data-rh="true" property="og:title" content="(.*$)"\/>/;
 const uber_dec = /meta data-rh="true" name="description" content="(.*)"\/>/;
-const uber_img_reg = /meta data-rh="true" property="og:image" content="(.*.jpeg)"\/>/;
+const uber_img_reg = /meta data-rh="true" property="og:image" content="(.*$.jpeg)"\/>/;
 const cors = "https://cors-anywhere.herokuapp.com/";
 const GOOGLE_SEARCH = "https://www.google.com/search?q=";
 export default {
