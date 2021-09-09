@@ -88,7 +88,8 @@ const panda_dec = /<meta name="description" content="(.*)">/i;
 const uber_title_reg = /meta data-rh="true" property="og:title" content="(.*$)"\/>/;
 const uber_dec = /meta data-rh="true" name="description" content="(.*)"\/>/;
 const uber_img_reg = /meta data-rh="true" property="og:image" content="(.*$.jpeg)"\/>/;
-const cors = "https://cors-anywhere.herokuapp.com/";
+// const cors = "https://cors-anywhere.herokuapp.com/";
+const cors = "https://boiling-ravine-52236.herokuapp.com/";
 const GOOGLE_SEARCH = "https://www.google.com/search?q=";
 export default {
   name: "SingleStore",
